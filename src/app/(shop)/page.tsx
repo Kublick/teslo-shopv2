@@ -1,14 +1,32 @@
+export const revalidate = 60;
+
 import ProductGrid from "@/components/products/product-grid/ProductGrid";
 import { Title } from "@/components/ui/title/Title";
-import { initialData } from "@/seed/seed";
+import { getPaginatedProductsWithImages } from "../../actions/product/product-pagination";
+import { redirect } from "next/navigation";
+import Pagination from "@/components/ui/pagination/Pagination";
 
-const products = initialData.products;
+interface Props {
+  searchParams: {
+    page?: string;
+  };
+}
 
-export default function Home() {
+export default async function Home({ searchParams }: Props) {
+  const page = searchParams.page ? Number(searchParams.page) : 1;
+  const { products, currentPage, totalPages } =
+    await getPaginatedProductsWithImages({ page });
+
+  if (products.length === 0) {
+    redirect("/");
+  }
+
   return (
     <>
       <Title title="Tienda" subtitle="Todos los productos" className="mb-2" />
       <ProductGrid products={products} />
+
+      <Pagination totalPages={totalPages} />
     </>
   );
 }
