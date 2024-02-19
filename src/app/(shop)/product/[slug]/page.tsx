@@ -1,21 +1,50 @@
+export const revalidate = 600408;
 import SizeSelector from "@/components/product/size-selector/SizeSelector";
 import { titleFont } from "@/config/fonts";
-import { initialData } from "@/seed/seed";
+
 import { notFound } from "next/navigation";
 
 import QuantitySelector from "@/components/product/quantity-selector/QuantitySelector";
 import ProductSlideShow from "@/components/product/slideshow/ProductSlideShow";
 import ProductMobileSlideShow from "@/components/product/slideshow/ProductMobileSlideShow";
+import { getProductBySlug } from "@/actions/product/get-product-by-slug";
+import StockLabel from "@/components/product/stock-label/StockLabel";
+import { Metadata, ResolvingMetadata } from "next";
 
 interface Props {
   params: {
     slug: string;
   };
 }
-export default function ProductByIdPage({ params }: Props) {
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  // read route params
+  const slug = params.slug;
+
+  // fetch data
+  const product = await getProductBySlug(slug);
+
+  // optionally access and extend (rather than replace) parent metadata
+  // const previousImages = (await parent).openGraph?.images || []
+
+  return {
+    title: product?.title ?? "Producto no encontrado",
+    description: product?.description ?? "Producto no encontrado",
+    // openGraph: {
+    //   title: product?.title ?? "Producto no encontrado",
+    //   description: product?.description ?? "Producto no encontrado",
+    //   images: [`/products/${product?.images[1]}`],
+    // },
+  };
+}
+
+export default async function ProductByIdPage({ params }: Props) {
   const { slug } = params;
 
-  const product = initialData.products.find((product) => product.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -36,6 +65,7 @@ export default function ProductByIdPage({ params }: Props) {
         />
       </div>
       <div className="col-span-1  px-5">
+        <StockLabel slug={product.slug} />
         <h1 className={`${titleFont.className} text-xl font-bold antialiased`}>
           {product.title}
         </h1>
