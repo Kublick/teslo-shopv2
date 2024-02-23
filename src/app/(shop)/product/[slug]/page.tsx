@@ -1,5 +1,5 @@
 export const revalidate = 600408;
-import SizeSelector from "@/components/product/size-selector/SizeSelector";
+
 import { titleFont } from "@/config/fonts";
 
 import { notFound } from "next/navigation";
@@ -10,6 +10,7 @@ import ProductMobileSlideShow from "@/components/product/slideshow/ProductMobile
 import { getProductBySlug } from "@/actions/product/get-product-by-slug";
 import StockLabel from "@/components/product/stock-label/StockLabel";
 import { Metadata, ResolvingMetadata } from "next";
+import AddToCart from "./ui/AddToCart";
 
 interface Props {
   params: {
@@ -71,16 +72,7 @@ export default async function ProductByIdPage({ params }: Props) {
         </h1>
         <p className="mb-5 text-lg">${product.price}</p>
 
-        <SizeSelector
-          availableSizes={product.sizes}
-          selectedSize={product.sizes[0]}
-        />
-
-        <QuantitySelector quantity={2} />
-
-        <button type="button" className="btn-primary my-5">
-          Agregar al carrito
-        </button>
+        <AddToCart product={product} />
 
         <h3 className="text-sm font-bold">Descripcion</h3>
         <p className="font-light">{product.description}</p>

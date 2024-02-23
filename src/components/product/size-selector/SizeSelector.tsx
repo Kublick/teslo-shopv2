@@ -1,19 +1,28 @@
+"use client";
+
 import { type Size } from "@/intefaces/product";
 import clsx from "clsx";
-import React from "react";
 
 interface Props {
-  selectedSize: Size;
+  selectedSize?: Size;
   availableSizes: Size[];
+  onSizeChanged: (size: Size) => void;
 }
 
-const SizeSelector = ({ selectedSize, availableSizes }: Props) => {
+export const SizeSelector = ({
+  selectedSize,
+  availableSizes,
+  onSizeChanged,
+}: Props) => {
   return (
     <div className="my-5 ">
-      <h3 className="mb-4 font-bold">Tallas disponibles</h3>
+      <h3 className="mb-4 font-bold">Available Sizes</h3>
       <div className="flex">
         {availableSizes.map((size) => (
           <button
+            onClick={() => {
+              onSizeChanged(size);
+            }}
             type="button"
             key={size}
             className={clsx("mx-2 hover:underline", {
@@ -27,5 +36,3 @@ const SizeSelector = ({ selectedSize, availableSizes }: Props) => {
     </div>
   );
 };
-
-export default SizeSelector;
