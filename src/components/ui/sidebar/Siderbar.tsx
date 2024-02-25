@@ -1,4 +1,5 @@
 "use client";
+import { logout } from "@/actions/auth/logout";
 import { useUiStore } from "@/store/ui/ui-store";
 import clsx from "clsx";
 import Link from "next/link";
@@ -13,10 +14,15 @@ import {
   IoShirtOutline,
   IoTicketOutline,
 } from "react-icons/io5";
+import { useSession } from "next-auth/react";
 
 const Siderbar = () => {
   const isSideMenuOpen = useUiStore((state) => state.isSideMenuOpen);
   const closeMenu = useUiStore((state) => state.closeSideMenu);
+
+  const { data: session } = useSession();
+
+  const isAuthenticated = !!session?.user;
 
   return (
     <div>
@@ -53,7 +59,8 @@ const Siderbar = () => {
           />
         </div>
         <Link
-          href={"/"}
+          onClick={() => closeMenu()}
+          href={"/profile"}
           className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
         >
           <IoPersonOutline size={30} />
@@ -66,42 +73,49 @@ const Siderbar = () => {
           <IoTicketOutline size={30} />
           <span className="ml-3 text-xl">Ordenes</span>
         </Link>
-        <Link
-          href={"/"}
-          className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
-        >
-          <IoLogInOutline size={30} />
-          <span className="ml-3 text-xl">Ingresar</span>
-        </Link>
-        <Link
-          href={"/"}
-          className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
-        >
-          <IoLogOutOutline size={30} />
-          <span className="ml-3 text-xl">Salir</span>
-        </Link>
-        <div className="my-10 h-px w-full bg-gray-200" />
-        <Link
-          href={"/"}
-          className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
-        >
-          <IoShirtOutline size={30} />
-          <span className="ml-3 text-xl">Productos</span>
-        </Link>
-        <Link
-          href={"/"}
-          className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
-        >
-          <IoTicketOutline size={30} />
-          <span className="ml-3 text-xl">Ordenes</span>
-        </Link>
-        <Link
-          href={"/"}
-          className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
-        >
-          <IoPeopleOutline size={30} />
-          <span className="ml-3 text-xl">Usuarios</span>
-        </Link>
+        {isAuthenticated ? (
+          <button
+            className="mt-10 flex w-full items-center rounded p-2 transition-all hover:bg-gray-100"
+            onClick={() => logout()}
+          >
+            <IoLogOutOutline size={30} />
+            <span className="ml-3 text-xl">Salir</span>
+          </button>
+        ) : (
+          <Link
+            href={"/auth/login"}
+            className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
+          >
+            <IoLogInOutline size={30} />
+            <span className="ml-3 text-xl">Ingresar</span>
+          </Link>
+        )}
+        {isAuthenticated && session.user?.role === "admin" && (
+          <>
+            <div className="my-10 h-px w-full bg-gray-200" />
+            <Link
+              href={"/"}
+              className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
+            >
+              <IoShirtOutline size={30} />
+              <span className="ml-3 text-xl">Productos</span>
+            </Link>
+            <Link
+              href={"/"}
+              className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
+            >
+              <IoTicketOutline size={30} />
+              <span className="ml-3 text-xl">Ordenes</span>
+            </Link>
+            <Link
+              href={"/"}
+              className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
+            >
+              <IoPeopleOutline size={30} />
+              <span className="ml-3 text-xl">Usuarios</span>
+            </Link>
+          </>
+        )}
       </nav>
     </div>
   );
