@@ -58,6 +58,7 @@ const Siderbar = () => {
             className="w-full rounded border-b-2 border-gray-200 bg-gray-50 py-1 pl-10 pr-10 text-xl focus:border-blue-500 focus:outline-none"
           />
         </div>
+
         <Link
           onClick={() => closeMenu()}
           href={"/profile"}
@@ -67,7 +68,8 @@ const Siderbar = () => {
           <span className="ml-3 text-xl">Perfil</span>
         </Link>
         <Link
-          href={"/"}
+          onClick={() => closeMenu()}
+          href={"/orders"}
           className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
         >
           <IoTicketOutline size={30} />
@@ -100,13 +102,16 @@ const Siderbar = () => {
               <IoShirtOutline size={30} />
               <span className="ml-3 text-xl">Productos</span>
             </Link>
+
             <Link
-              href={"/"}
+              onClick={() => console.log("click")}
+              href={"/orders"}
               className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
             >
               <IoTicketOutline size={30} />
               <span className="ml-3 text-xl">Ordenes</span>
             </Link>
+
             <Link
               href={"/"}
               className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"

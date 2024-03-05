@@ -59,6 +59,7 @@ export const AddressForm = ({ countries, userStoreAddress = {} }: Props) => {
     if (data.rememberAddress) {
       const { rememberAddress, ...restAddress } = data;
 
+      setAddress(restAddress);
       await setUserAddress(
         {
           address2: restAddress.address2 || "",
@@ -66,11 +67,10 @@ export const AddressForm = ({ countries, userStoreAddress = {} }: Props) => {
         },
         session?.user.id as string,
       );
-
-      router.push("/checkout");
     } else {
       await deleteUserAddress(session?.user.id as string);
     }
+    router.push("/checkout");
   };
 
   return (

@@ -16,7 +16,6 @@ export default async function AddressPage() {
   }
 
   const userAddress = (await getUserdAddress(session?.user.id as string)) ?? {};
-  console.log("🚀 ~ AddressPage ~ userAddress:", userAddress);
 
   return (
     <div className="mb-72 flex flex-col px-10 sm:items-center sm:justify-center sm:px-0">
