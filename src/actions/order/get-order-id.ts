@@ -47,8 +47,6 @@ export const getOrderById = async (orderId: string) => {
       }
     }
 
-    console.log(JSON.stringify(order, null, 2));
-
     return {
       ok: true,
       order,

@@ -6,6 +6,7 @@ import { IoCardOutline } from "react-icons/io5";
 import { getOrderById } from "@/actions/order/get-order-id";
 import { currencyFormater } from "../../../../utils/currencyFormater";
 import { redirect } from "next/navigation";
+import { PayPalButton } from "@/components/paypal/PayPalButton";
 
 interface Props {
   params: {
@@ -48,7 +49,7 @@ export default async function OrdersByIdPage({ params }: Props) {
 
             {/* Items */}
 
-            {products.map((item, index) => (
+            {products.map((item: any, index: number) => (
               <div key={item.product.slug + index} className="mb-5 flex">
                 <Image
                   src={`/products/${item.product.ProductImage[0].url}`}
@@ -118,7 +119,6 @@ export default async function OrdersByIdPage({ params }: Props) {
               <div
                 className={clsx(
                   "mb-5 flex items-center rounded-lg px-3.5 py-2 text-xs font-bold text-white",
-                  { "bg-red-500": order.isPaid === false },
                   { "bg-green-700": order.isPaid === true },
                 )}
               >
@@ -126,7 +126,9 @@ export default async function OrdersByIdPage({ params }: Props) {
                 {order.isPaid ? (
                   <span className="mx-2">Pagada</span>
                 ) : (
-                  <span className="mx-2">Pendiente de pago</span>
+                  <div className="w-full">
+                    <PayPalButton amount={order.total} orderId={order.id} />
+                  </div>
                 )}
               </div>
             </div>

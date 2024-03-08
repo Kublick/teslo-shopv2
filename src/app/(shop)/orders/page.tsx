@@ -49,7 +49,7 @@ export default async function OrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {orders?.map((o) => (
+            {orders?.map((o: any) => (
               <tr
                 className="border-b bg-white transition duration-300 ease-in-out hover:bg-gray-100"
                 key={o.id}
