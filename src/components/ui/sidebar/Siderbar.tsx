@@ -96,7 +96,8 @@ const Siderbar = () => {
           <>
             <div className="my-10 h-px w-full bg-gray-200" />
             <Link
-              href={"/"}
+              onClick={() => closeMenu()}
+              href={"/admin/products"}
               className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
             >
               <IoShirtOutline size={30} />
@@ -104,8 +105,8 @@ const Siderbar = () => {
             </Link>
 
             <Link
-              onClick={() => console.log("click")}
-              href={"/orders"}
+              onClick={() => closeMenu()}
+              href={"/admin/orders"}
               className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
             >
               <IoTicketOutline size={30} />
@@ -113,7 +114,8 @@ const Siderbar = () => {
             </Link>
 
             <Link
-              href={"/"}
+              onClick={() => closeMenu()}
+              href={"/admin/users"}
               className="mt-10 flex items-center rounded p-2 transition-all hover:bg-gray-100"
             >
               <IoPeopleOutline size={30} />
